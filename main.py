@@ -8,6 +8,17 @@ import os
 
 class Bot():
   def __init__(self, poll_name, email, netid, password, default_timeout, interval):
+    """
+    Handles initializing a Bot instance
+
+    poll_name: the polleve poll name
+    email: cornell student email
+    netid: cornell netid
+    password: cornell student password
+    default_timeout: the amount of time in ms to allow for searching for an
+      elementbefore throwing an exception 
+    interval: the interval at which to poll the polleve
+    """
     self.driver =  webdriver.Firefox()
     self.poll_name = poll_name
     self.email = email
@@ -18,6 +29,11 @@ class Bot():
   
 
   def login(self):
+    """
+    Handles logging into a polleve account. Requires that the credentials are 
+    a Cornell student (it is unlikely that the webflow is similar across
+    different colleges).
+    """
     print("logging in...")
     self.driver.get(f'https://pollev.com/home')
 
@@ -69,6 +85,10 @@ class Bot():
 
 
   def poll_mc(self):
+    """
+    Periodically (specified in self.interval) sends a click to a polleve 
+    multiple choice component. 
+    """
     while True:
       try:
         print("waiting for mc...")
@@ -84,10 +104,14 @@ class Bot():
       
       
   def end_session(self):
+    """
+    Terminates the webdriver (self.driver)
+    """
     print("closing...")
     self.driver.close()
     print("successfully closed")
     
+
 class Credentials():
   def __init__(self):
     print("looking for a credential file...")
