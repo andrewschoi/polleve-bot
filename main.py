@@ -134,6 +134,10 @@ class Credentials():
 
 
   def read_credentials(self):
+    """
+    Reads credential.txt and returns its contents as a JSON. Requires the contents
+    of credentials.txt
+    """
     with open("credentials.txt", "r") as f:
       contents = f.read()
       credentials = json.loads(contents)
@@ -141,10 +145,16 @@ class Credentials():
   
 
   def is_credential_valid(self):
+    """
+    Returns whether a credential file exists in path
+    """
     return os.path.isfile("./credentials.txt")
   
 
   def create_credential(self):
+    """
+    Creates a credential file based on user input
+    """
     with open('credentials.txt', "w") as f:
       poll_name = input("poll name: ")
       email = input("email: ") 
