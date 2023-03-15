@@ -2,12 +2,14 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import time
 
 POLL_NAME = ""
-EMAIL = "
+EMAIL = ""
 NETID = ""
 NETID_PASSWORD = ""
-DEFAULT_TIMEOUT = 10
+DEFAULT_TIMEOUT = 100
+INTERVAL = 5
 
 class Bot():
   def __init__(self, poll_name=None):
@@ -65,9 +67,20 @@ class Bot():
     join.click()
 
   def poll_mc(self):
-    print("click on mc")
-    mc = WebDriverWait(self.driver, DEFAULT_TIMEOUT).until(EC.presence_of_element_located((By.CLASS_NAME, 'component-response-multiple-choice__option__value')))
-    mc.click()
+    while True:
+      try:
+        print("waiting for mc...")
+        mc = WebDriverWait(self.driver, DEFAULT_TIMEOUT).until(EC.presence_of_element_located((By.CLASS_NAME, 'component-response-multiple-choice__option__value')))
+        mc.click()
+        print("sending click to mc")
+
+        print("pausing search...")
+        time.sleep(INTERVAL)
+
+      except KeyboardInterrupt:
+        print("raising exception to quit")
+      
+        
 
 
   def end_session(self):
@@ -81,9 +94,11 @@ if __name__ == "__main__":
   bot= Bot(poll_name="4820sp")
   try:
     bot.login()
+    bot.poll_mc()
   except Exception as e:
     print("an error occurred")
-    print(e)
+    print("hit any key to end program")
+  
   
   input()
   bot.end_session()
