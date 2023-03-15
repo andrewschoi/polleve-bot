@@ -7,8 +7,6 @@ import json
 import os
 
 class Bot():
-
-
   def __init__(self, poll_name, email, netid, password, default_timeout, interval):
     self.driver =  webdriver.Firefox()
     self.poll_name = poll_name
@@ -110,15 +108,18 @@ class Credentials():
     self.default_timeout = credentials["default_timeout"]
     self.interval = credentials["interval"]
 
+
   def read_credentials(self):
     with open("credentials.txt", "r") as f:
       contents = f.read()
       credentials = json.loads(contents)
       return credentials
   
+
   def is_credential_valid(self):
     return os.path.isfile("./credentials.txt")
   
+
   def create_credential(self):
     with open('credentials.txt', "w") as f:
       poll_name = input("poll name: ")
@@ -141,7 +142,6 @@ class Credentials():
 
 if __name__ == "__main__":
   cred = Credentials()
-
   bot= Bot(
     poll_name=cred.poll_name, 
     email=cred.email,
@@ -159,8 +159,6 @@ if __name__ == "__main__":
     print(e)
     print("hit any key to end program")
   
-  
-  input()
   bot.end_session()
   
 
