@@ -3,6 +3,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
+import json
+import os
 
 class Bot():
 
@@ -38,7 +40,7 @@ class Bot():
     next_btn.click()
 
     print("entering netid to netid input")
-    netid_input = WebDriverWait(self.driver, DEFAULT_TIMEOUT).until(EC.presence_of_element_located((By.XPATH, '//*[@id="username"]')))
+    netid_input = WebDriverWait(self.driver, self.default_timeout).until(EC.presence_of_element_located((By.XPATH, '//*[@id="username"]')))
     netid_input.send_keys(f"{self.netid}")
 
     print("entering password to password input")
@@ -90,28 +92,71 @@ class Bot():
     
 class Credentials():
   def __init__(self):
+    print("looking for a credential file...")
+
     if not self.is_credential_valid():
-      print("creating credential file")
-      self.create_credential
+      print("credential file doesn't exist \n creating credential file")
+      self.create_credential()
+    else:
+      print("credential file already exists")
     
-    print("credential file already exists")
-    
+    print("reading credential contents...")
+    credentials = self.read_credentials()
+
+    self.poll_name = credentials["poll_name"]
+    self.email = credentials["email"]
+    self.netid = credentials["netid"]
+    self.password = credentials["password"]
+    self.default_timeout = credentials["default_timeout"]
+    self.interval = credentials["interval"]
+
+  def read_credentials(self):
+    with open("credentials.txt", "r") as f:
+      contents = f.read()
+      credentials = json.loads(contents)
+      return credentials
   
   def is_credential_valid(self):
-    pass
+    return os.path.isfile("./credentials.txt")
   
   def create_credential(self):
-    pass
-
+    with open('credentials.txt', "w") as f:
+      poll_name = input("poll name: ")
+      email = input("email: ") 
+      netid = input("netid: ")
+      password = input("password: ")
+      default_timeout = input("default timeout: ")
+      interval = input("interval: ")
+      credentials = {
+        "poll_name": poll_name, 
+        "email": email,
+        "netid": netid,
+        "password": password,
+        "default_timeout": default_timeout,
+        "interval": interval
+      }
+      f.write(json.dumps(credentials))
+      print("created credentials file")
   
 
 if __name__ == "__main__":
-  bot= Bot(poll_name="4820sp")
+  cred = Credentials()
+
+  bot= Bot(
+    poll_name=cred.poll_name, 
+    email=cred.email,
+    netid=cred.netid,
+    password=cred.password,
+    default_timeout=int(cred.default_timeout),
+    interval=int(cred.interval)
+  )
+
   try:
     bot.login()
     bot.poll_mc()
   except Exception as e:
     print("an error occurred")
+    print(e)
     print("hit any key to end program")
   
   
