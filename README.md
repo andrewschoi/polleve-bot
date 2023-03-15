@@ -9,15 +9,13 @@ Installation
 
 To install the required dependencies, run:
 
-pip install -r requirements.txt
+    pip install -r requirements.txt
 
 Running
 
 Running this script requires a file called credentials.txt. To create a credentials.txt file, run:
 
-css
-
-python main.py
+    python main.py
 
 You will be prompted to enter information such as the name of the polleve, your student email, student password, and more.
 
