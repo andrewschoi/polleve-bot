@@ -1,7 +1,7 @@
 # polleve-bot
 
 Prerequisites
-
+[THIS WEBFLOW IS ONLY APPLICABLE FOR CORNELL STUDENTS]
 Before running this script, please ensure that you have a webdriver located in your PATH. Firefox webdrivers can be found in the webdrivers folder.
 
 All instructions moving forward should be done in the project's directory.
