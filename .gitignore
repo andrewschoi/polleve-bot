@@ -1,3 +1,4 @@
 geckodriver.log
 pyvenv.cfg
 .DS_Store
+credentials.txt
